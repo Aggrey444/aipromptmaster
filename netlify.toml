@@ -47,3 +47,6 @@
 # Interpay callback body is form-data; Netlify functions receive it in event.body
 [functions]
   node_bundler = "esbuild"
+
+# Diagnostics performed during troubleshooting are intentionally removed.
+# No diagnostic functions remain in netlify/functions.
