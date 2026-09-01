@@ -1,6 +1,6 @@
-import { jsonResponse, errorResponse, parseBody, LambdaEvent } from "./_shared";
+import { jsonResponse, errorResponse, parseRequest } from "./_shared.mts";
 
-export default async function handler(event: LambdaEvent) {
+export default async function handler(req: Request): Promise<Response> {
   try {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
@@ -10,7 +10,8 @@ export default async function handler(event: LambdaEvent) {
       );
     }
 
-    const { prompt, framework } = parseBody(event);
+    const body = await parseRequest(req);
+    const { prompt, framework } = body;
     if (!prompt) {
       return errorResponse(400, "Prompt text is required.");
     }

@@ -3,14 +3,14 @@ import {
   sha1,
   jsonResponse,
   errorResponse,
-  parseBody,
-  LambdaEvent,
-} from "./_shared";
+  parseRequest,
+} from "./_shared.mts";
 
-export default async function handler(event: LambdaEvent) {
+export default async function handler(req: Request): Promise<Response> {
   try {
     const cfg = getInterpayConfig();
 
+    const body = await parseRequest(req);
     const {
       name,
       email,
@@ -21,7 +21,7 @@ export default async function handler(event: LambdaEvent) {
       currency = "GHS",
       order_id,
       order_desc = "AI Prompt Master - One-Time Lifetime Access Fee",
-    } = parseBody(event);
+    } = body;
 
     if (!order_id) {
       return errorResponse(400, "order_id is required.");

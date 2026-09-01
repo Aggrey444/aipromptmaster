@@ -2,13 +2,12 @@ import {
   getInterpayConfig,
   sha1,
   jsonResponse,
-  parseBody,
-  LambdaEvent,
-} from "./_shared";
+  parseRequest,
+} from "./_shared.mts";
 
-export default async function handler(event: LambdaEvent) {
+export default async function handler(req: Request): Promise<Response> {
   try {
-    const body = parseBody(event);
+    const body = await parseRequest(req);
     console.log("Interpay Callback Received:", body);
 
     const { status_code, signature, order_id, trans_ref_no } = body;

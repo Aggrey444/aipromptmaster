@@ -2,13 +2,13 @@ import {
   getInterpayConfig,
   jsonResponse,
   errorResponse,
-  parseBody,
-  LambdaEvent,
-} from "./_shared";
+  parseRequest,
+} from "./_shared.mts";
 
-export default async function handler(event: LambdaEvent) {
+export default async function handler(req: Request): Promise<Response> {
   try {
-    const { order_id, trans_ref_no } = parseBody(event);
+    const body = await parseRequest(req);
+    const { order_id, trans_ref_no } = body;
 
     if (!order_id) {
       return errorResponse(400, "order_id is required.");
@@ -22,7 +22,7 @@ export default async function handler(event: LambdaEvent) {
       );
     }
 
-    const body = JSON.stringify({ app_id: cfg.appId, app_key: cfg.appKey, order_id });
+    const requestBody = JSON.stringify({ app_id: cfg.appId, app_key: cfg.appKey, order_id });
 
     let data: any = null;
     for (const fn of ["GetInvoiceStatusV4", "GetInvoiceStatus"]) {
@@ -30,7 +30,7 @@ export default async function handler(event: LambdaEvent) {
         const response = await fetch(`${cfg.baseUrl}/${fn}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body,
+          body: requestBody,
         });
         const contentType = response.headers.get("content-type") || "";
         if (contentType.includes("application/json")) {
