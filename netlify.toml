@@ -1,0 +1,49 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Redirect API paths to their Netlify function equivalents so the frontend
+# keeps using /api/... URLs unchanged.
+[[redirects]]
+  from = "/api/health"
+  to = "/.netlify/functions/health"
+  status = 200
+
+[[redirects]]
+  from = "/api/interpay/process-payment"
+  to = "/.netlify/functions/interpay-process-payment"
+  status = 200
+
+[[redirects]]
+  from = "/api/interpay/verify-payment"
+  to = "/.netlify/functions/interpay-verify-payment"
+  status = 200
+
+[[redirects]]
+  from = "/api/interpay/callback"
+  to = "/.netlify/functions/interpay-callback"
+  status = 200
+
+[[redirects]]
+  from = "/api/ai-enhance"
+  to = "/.netlify/functions/ai-enhance"
+  status = 200
+
+[[redirects]]
+  from = "/api/ai-template"
+  to = "/.netlify/functions/ai-template"
+  status = 200
+
+# SPA fallback: route all other paths to index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Interpay callback body is form-data; Netlify functions receive it in event.body
+[functions]
+  node_bundler = "esbuild"

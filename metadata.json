@@ -1,0 +1,6 @@
+{
+  "name": "AI Prompt Master",
+  "description": "A beginner-friendly platform for building structured prompts and content templates using CLEAR (text), SAEALD (image), and SCENE (video) frameworks. Powered by Dennel Technologies AI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
