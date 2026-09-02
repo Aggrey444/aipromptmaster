@@ -1,0 +1,10 @@
+node_modules
+dist
+.netlify
+Dockerfile
+docker-compose.yml
+.dockerignore
+.env
+.env.docker
+.git
+*.log
